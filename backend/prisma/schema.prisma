@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Character {
+  id               Int    @id @default(autoincrement())
+  name             String
+  profile          String
+  physical_f1      String
+  evolution_f2     String
+  visual_signature String
+}
+
+model ChapterStructure {
+  chapterNumber Int    @id
+  name          String
+  objective     String
+  elements      String
+  studentPages  Int    @default(8)
+}
+
+model EducationalLevel {
+  level         String @id // 'fund_1' ou 'fund_2'
+  editorialLine String
+  pillars       String
+  methodology   String
+}
+
+model Collection {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  description       String              // Conceito central da coleção
+  details           CollectionDetail[]
+}
+
+model CollectionDetail {
+  id                Int        @id @default(autoincrement())
+  collectionId      Int
+  collection        Collection @relation(fields: [collectionId], references: [id])
+  cycle             String     // "Fundamental 1" ou "Fundamental 2"
+  themesPerVolume   String     // Temas dos volumes (ex: Vol 1, 2, 3...)
+  methodologyFocus  String     // Foco metodológico específico do ciclo
+  teacherGuidelines String     // Instruções para o Livro do Professor (60 páginas)
+}
